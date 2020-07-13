@@ -436,9 +436,9 @@ def parse_daterevised(medline):
     day = ""
     DateRevised = medline.find("DateRevised")
     if DateRevised is not None:
-        year = DateRevised.find("Year")
-        month = DateRevised.find("Month")
-        day = DateRevised.find("Day")
+        year = DateRevised.findtext("Year")
+        month = month_or_day_formater(DateRevised.find("Month").text)
+        day = month_or_day_formater(DateRevised.find("Day").text)
         return "-".join(str(x) for x in filter(None, [year, month, day]))
     else:
         return ""
