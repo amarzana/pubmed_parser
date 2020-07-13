@@ -443,32 +443,6 @@ def parse_daterevised(medline):
     else:
         return ""
 
-
-def parse_daterevised(medline):
-    """Parse chemical list from article
-
-    Parameters
-    ----------
-    medline: Element
-        The lxml node pointing to a medline document
-
-    Returns
-    -------
-    DateRevised: str
-        PubDate extracted from an article.
-    """
-    year = ""
-    month = ""
-    day = ""
-    DateRevised = medline.find("DateRevised")
-    if DateRevised is not None:
-        year = DateRevised.find("Year")
-        month = DateRevised.find("Month")
-        day = DateRevised.find("Day")
-        return "-".join(str(x) for x in filter(None, [year, month, day]))
-    else:
-        return ""
-
 def parse_references(pubmed_article, reference_list):
     """Parse references from Pubmed Article
 
