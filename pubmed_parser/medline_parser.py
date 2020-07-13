@@ -418,6 +418,57 @@ def date_extractor(journal, year_info_only):
         return "-".join(str(x) for x in filter(None, [year, month, day]))
 
 
+def parse_daterevised(medline):
+    """Parse chemical list from article
+
+    Parameters
+    ----------
+    medline: Element
+        The lxml node pointing to a medline document
+
+    Returns
+    -------
+    DateRevised: str
+        PubDate extracted from an article.
+    """
+    year = ""
+    month = ""
+    day = ""
+    DateRevised = medline.find("DateRevised")
+    if DateRevised is not None:
+        year = DateRevised.find("Year")
+        month = DateRevised.find("Month")
+        day = DateRevised.find("Day")
+        return "-".join(str(x) for x in filter(None, [year, month, day]))
+    else:
+        return ""
+
+
+def parse_daterevised(medline):
+    """Parse chemical list from article
+
+    Parameters
+    ----------
+    medline: Element
+        The lxml node pointing to a medline document
+
+    Returns
+    -------
+    DateRevised: str
+        PubDate extracted from an article.
+    """
+    year = ""
+    month = ""
+    day = ""
+    DateRevised = medline.find("DateRevised")
+    if DateRevised is not None:
+        year = DateRevised.find("Year")
+        month = DateRevised.find("Month")
+        day = DateRevised.find("Day")
+        return "-".join(str(x) for x in filter(None, [year, month, day]))
+    else:
+        return ""
+
 def parse_references(pubmed_article, reference_list):
     """Parse references from Pubmed Article
 
@@ -553,6 +604,7 @@ def parse_article_info(
     doi = parse_doi(pubmed_article)
     references = parse_references(pubmed_article, reference_list)
     pubdate = date_extractor(journal, year_info_only)
+    daterevised = parse_daterevised(medline)
     mesh_terms = parse_mesh_terms(medline)
     publication_types = parse_publication_types(medline)
     chemical_list = parse_chemical_list(medline)
@@ -565,6 +617,7 @@ def parse_article_info(
         "journal": journal_name,
         "authors": authors,
         "pubdate": pubdate,
+        "daterevised": daterevised,
         "pmid": pmid,
         "mesh_terms": mesh_terms,
         "publication_types": publication_types,
@@ -650,6 +703,7 @@ def parse_medline_xml(
             "authors": np.nan,
             "affiliations": np.nan,
             "pubdate": np.nan,
+            "daterevised": np.nan,
             "pmid": p.text.strip(),
             "doi": np.nan,
             "other_id": np.nan,
